@@ -1,1 +1,1 @@
-{}
+{"Charles": [{"timestamp": "2024-02-28 18:49", "mot": "livre", "resultat": true, "duree": 6}, {"timestamp": "2024-02-28 19:02", "mot": "pont", "resultat": true, "duree": 5}, {"timestamp": "2024-02-28 19:02", "mot": "jour", "resultat": true, "duree": 3}, {"timestamp": "2024-02-28 20:29", "mot": "ours", "resultat": true, "duree": 4}, {"timestamp": "2024-02-28 20:34", "mot": "elephant", "resultat": true, "duree": 12}, {"timestamp": "2024-02-28 20:35", "mot": "pont", "resultat": true, "duree": 8}]}
