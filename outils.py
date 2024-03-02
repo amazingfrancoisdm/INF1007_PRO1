@@ -3,6 +3,8 @@ import os
 import time
 from util import lire_historique_utilisateur, enregistrer_partie, lire_dictionnaires_mots
 
+
+# TODO Ajuster la verification du nom avec isAlpha
 def validerNom(name):  
     if len(name)>=3:
         for n in name:
@@ -20,7 +22,7 @@ def choisirMot(mots):
 def effacerConsole():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
+# TODO Condition pour ne pas refaire la meme loop a chaque fois
 def afficherMot(lettres_trouvees, mot):
     txt = []
     for i in range(len(mot)):
@@ -40,7 +42,7 @@ def afficherJeu(lettres_ratees, lettres_trouvees, mot):
     print("Lettres trouvees: " + " ".join(lettres_trouvees))
     print("Lettres ratees: " + " ".join(lettres_ratees)+"\n") 
 
-    parties = [
+    parties_jouees = [
     ["   0   |", "       |", "       |"],
     ["   0   |", "   |   |", "       |"],
     ["   0   |", "  /|   |", "       |"],
@@ -49,7 +51,7 @@ def afficherJeu(lettres_ratees, lettres_trouvees, mot):
     ["   0   |", "  /|\  |", "  / \  |"]
     ]
 
-    partie_a_afficher = parties[len(lettres_ratees)-1] if len(lettres_ratees) > 0 else ["       |", "       |", "       |"]
+    partie_a_afficher = parties_jouees[len(lettres_ratees)-1] if len(lettres_ratees) > 0 else ["       |", "       |", "       |"]
 
     print("   +---+")
     print("   |   |")
@@ -57,7 +59,7 @@ def afficherJeu(lettres_ratees, lettres_trouvees, mot):
     print("       |")
     print("==========")
     
-
+# TODO Revisiter la fonction pour voir si on peut simplifier ca
 def validerLettre(lettres_ratees, lettres_trouvees, mot):
 
     lettre = input("Entrez une lettre: ")
@@ -80,28 +82,30 @@ def validerLettre(lettres_ratees, lettres_trouvees, mot):
 def etatDeLaPartie(lettres_ratees, lettres_trouvees, mot, nom, temps_debut):
     temps = round(time.time()-temps_debut)
 
+    partie_terminee = False
+
     if len(lettres_ratees) == 6:
         print(f"Dommage ! Le mot était {mot}.")
-        input("Appuyez sur entrer pour continuer...")
-        lettres_trouvees.clear()
-        lettres_ratees.clear()
-        enregistrer_partie(nom, mot, False, temps)
-        effacerConsole()
-        return True
+        partie_terminee = True
+        
     elif len(lettres_trouvees) == len(set(mot)):
         print(f"Félicitations {nom} ! Vous avez deviné le mot {mot} en {temps} secondes et {len(lettres_ratees)} tentatives échouées.")
+        partie_terminee = True
+    
+    if partie_terminee:
         input("Appuyez sur entrer pour continuer...")
-        lettres_trouvees.clear()
-        lettres_ratees.clear()
-        enregistrer_partie(nom, mot, True, temps)
+        enregistrer_partie(nom, mot, len(lettres_trouvees) == len(set(mot)), temps)
         effacerConsole()
-        return True
-    else:
-        return False
+
+    return partie_terminee
     
 
-def game(lettres_ratees, lettres_trouvees, mot,nom):
+def game(choix,nom):
+
+    lettres_trouvees = []
+    lettres_ratees = []
     fin_de_partie = False
+    mot = choisirMot(lire_dictionnaires_mots()[["facile", "intermediaire", "difficile"][int(choix)-1]])
 
     afficherJeu(lettres_ratees, lettres_trouvees, mot)
     start = time.time()
@@ -111,15 +115,15 @@ def game(lettres_ratees, lettres_trouvees, mot,nom):
         fin_de_partie = etatDeLaPartie(lettres_ratees, lettres_trouvees, mot, nom, start)
         
 
-def lecture(nom):
+def afficherHistorique(nom):
     effacerConsole()
-    parties = lire_historique_utilisateur(nom)
+    parties_jouees = lire_historique_utilisateur(nom)
 
-    print("Historique des parties:")
+    print("Historique des parties_jouees:")
 
-    for i in range(len(parties)):
-        victoire = "gagné" if parties[i]["resultat"] == True else "perdu"
-        print("\t"+ parties[i]["mot"] + f" - {victoire} - " + str(parties[i]["duree"]) + " secondes")
+    for i in range(len(parties_jouees)):
+        victoire = "gagné" if parties_jouees[i]["resultat"] == True else "perdu"
+        print("\t"+ parties_jouees[i]["mot"] + f" - {victoire} - " + str(parties_jouees[i]["duree"]) + " secondes")
 
     input("Appuyez pour continuer...")
     effacerConsole()
