@@ -3,16 +3,17 @@ import os
 import time
 from util import lire_historique_utilisateur, enregistrer_partie, lire_dictionnaires_mots
 
-
-# TODO Ajuster la verification du nom avec isAlpha
-def validerNom(name):  
-    if len(name)>=3:
-        for n in name:
-            if not (65 <= ord(n) <= 90 or 97 <= ord(n) <= 122):
-                return False   
-        return True
-    else:
-        return False
+def choisirNom():
+    while True:
+        nom_entre = input("Veuillez entrer votre nom d'utilisateur: ")
+        effacerConsole()
+    
+        if len(nom_entre) > 3 and nom_entre.isalpha():
+            print(f"Bienvenue, {nom_entre}!\n\n")
+            return nom_entre
+        else:
+            print("Votre nom est invalide!")
+            continue
 
 def choisirMot(mots):
     index = random.randrange(len(mots)-1)
@@ -59,25 +60,25 @@ def afficherJeu(lettres_ratees, lettres_trouvees, mot):
     print("       |")
     print("==========")
     
-# TODO Revisiter la fonction pour voir si on peut simplifier ca
 def validerLettre(lettres_ratees, lettres_trouvees, mot):
 
     lettre = input("Entrez une lettre: ")
 
-    if (len(lettre) != 1) or not (65 <= ord(lettre) <= 90 or 97 <= ord(lettre) <= 122):
-        print("Vous devez entrer une lettre.")
-    else:
-        lettre_contenue = mot.find(lettre)
+    if len(lettre) == 1 and lettre.isalpha():
 
+        lettre = lettre.lower()
+        
         if (lettre in lettres_ratees) or (lettre in lettres_trouvees):
             print("Cette lettre a déjà été essayée.")
-        elif lettre_contenue == -1:
+        elif mot.find(lettre) == -1:
             lettres_ratees.append(lettre)
             afficherJeu(lettres_ratees, lettres_trouvees, mot)
         else:
             lettres_trouvees.append(lettre)
             afficherJeu(lettres_ratees, lettres_trouvees, mot)
-
+    else:
+        print("Vous devez entrer une lettre.")
+    
 
 def etatDeLaPartie(lettres_ratees, lettres_trouvees, mot, nom, temps_debut):
     temps = round(time.time()-temps_debut)

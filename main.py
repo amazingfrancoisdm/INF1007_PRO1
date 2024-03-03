@@ -2,26 +2,10 @@ from util import lire_historique_utilisateur, enregistrer_partie, lire_dictionna
 from outils import *
 import time
 
-nom_utilisateur = ""
 
 effacerConsole()
 
-# TODO Faire une fonction qui englobe toutes ces operations
-# TODO Bouger le username dans outils.py
-while True:
-    username = input("Veuillez entrer votre nom d'utilisateur: ")
-    effacerConsole()
-    
-    if validerNom(username):
-        print("Bienvenue, " + username + "!\n\n")
-        nom_utilisateur = username
-        
-        break
-    else:
-        print("Votre nom est invalide!")
-        continue
-
-
+nom_utilisateur = choisirNom()
 
 while True:
     print("Menu principal:\n1. Commencer une partie\n2. Afficher l'historique\n3. Quitter\n") 
