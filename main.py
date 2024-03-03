@@ -1,3 +1,5 @@
+# Fichier fait par Francois Dufour Martel (2330346)
+
 from util import lire_historique_utilisateur, enregistrer_partie, lire_dictionnaires_mots
 from outils import *
 import time

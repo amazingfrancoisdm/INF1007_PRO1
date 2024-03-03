@@ -1,3 +1,5 @@
+# Fichier fait par Francois Dufour Martel (2330346)
+
 import random
 import os
 import time
