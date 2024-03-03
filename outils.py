@@ -23,7 +23,6 @@ def choisirMot(mots):
 def effacerConsole():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# TODO Condition pour ne pas refaire la meme loop a chaque fois
 def afficherMot(lettres_trouvees, mot):
     txt = []
     for i in range(len(mot)):
@@ -67,7 +66,7 @@ def validerLettre(lettres_ratees, lettres_trouvees, mot):
     if len(lettre) == 1 and lettre.isalpha():
 
         lettre = lettre.lower()
-        
+
         if (lettre in lettres_ratees) or (lettre in lettres_trouvees):
             print("Cette lettre a déjà été essayée.")
         elif mot.find(lettre) == -1:
